@@ -28,174 +28,181 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.tab3 = new System.Windows.Forms.TabControl();
-            this.tabDescompacta = new System.Windows.Forms.TabPage();
-            this.currentDirectory = new System.Windows.Forms.TextBox();
-            this.chk_rename_default = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.chk_deleteCompactados = new System.Windows.Forms.CheckBox();
-            this.obtemDiretorios = new System.Windows.Forms.Button();
-            this.listagemDiretorios = new System.Windows.Forms.ListBox();
-            this.processa = new System.Windows.Forms.Button();
-            this.lblProgresso = new System.Windows.Forms.Label();
-            this.tab3.SuspendLayout();
-            this.tabDescompacta.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RarExtractor));
+            folderBrowserDialog1 = new FolderBrowserDialog();
+            tab3 = new TabControl();
+            tabDescompacta = new TabPage();
+            lblProgresso = new Label();
+            currentDirectory = new TextBox();
+            chk_rename_default = new CheckBox();
+            panel1 = new Panel();
+            progressBar1 = new ProgressBar();
+            chk_deleteCompactados = new CheckBox();
+            obtemDiretorios = new Button();
+            listagemDiretorios = new ListBox();
+            processa = new Button();
+            tab3.SuspendLayout();
+            tabDescompacta.SuspendLayout();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // folderBrowserDialog1
             // 
-            this.folderBrowserDialog1.Description = "Diretório Atual";
-            this.folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            this.folderBrowserDialog1.SelectedPath = "C:\\\\";
+            folderBrowserDialog1.Description = "Diretório Atual";
+            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer;
+            folderBrowserDialog1.SelectedPath = "C:\\\\";
             // 
             // tab3
             // 
-            this.tab3.Controls.Add(this.tabDescompacta);
-            this.tab3.Location = new System.Drawing.Point(2, 2);
-            this.tab3.Margin = new System.Windows.Forms.Padding(4);
-            this.tab3.Name = "tab3";
-            this.tab3.SelectedIndex = 0;
-            this.tab3.Size = new System.Drawing.Size(560, 407);
-            this.tab3.TabIndex = 4;
+            tab3.Controls.Add(tabDescompacta);
+            tab3.Location = new Point(2, 3);
+            tab3.Margin = new Padding(5);
+            tab3.Name = "tab3";
+            tab3.SelectedIndex = 0;
+            tab3.Size = new Size(640, 543);
+            tab3.TabIndex = 4;
             // 
             // tabDescompacta
             // 
-            this.tabDescompacta.Controls.Add(this.lblProgresso);
-            this.tabDescompacta.Controls.Add(this.currentDirectory);
-            this.tabDescompacta.Controls.Add(this.chk_rename_default);
-            this.tabDescompacta.Controls.Add(this.panel1);
-            this.tabDescompacta.Controls.Add(this.chk_deleteCompactados);
-            this.tabDescompacta.Controls.Add(this.obtemDiretorios);
-            this.tabDescompacta.Controls.Add(this.listagemDiretorios);
-            this.tabDescompacta.Controls.Add(this.processa);
-            this.tabDescompacta.Location = new System.Drawing.Point(4, 24);
-            this.tabDescompacta.Margin = new System.Windows.Forms.Padding(4);
-            this.tabDescompacta.Name = "tabDescompacta";
-            this.tabDescompacta.Padding = new System.Windows.Forms.Padding(4);
-            this.tabDescompacta.Size = new System.Drawing.Size(552, 379);
-            this.tabDescompacta.TabIndex = 1;
-            this.tabDescompacta.Text = "Diretórios a serem extraídos.";
-            this.tabDescompacta.UseVisualStyleBackColor = true;
-            // 
-            // currentDirectory
-            // 
-            this.currentDirectory.Enabled = false;
-            this.currentDirectory.Location = new System.Drawing.Point(8, 240);
-            this.currentDirectory.Margin = new System.Windows.Forms.Padding(4);
-            this.currentDirectory.Multiline = true;
-            this.currentDirectory.Name = "currentDirectory";
-            this.currentDirectory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.currentDirectory.Size = new System.Drawing.Size(532, 75);
-            this.currentDirectory.TabIndex = 14;
-            // 
-            // chk_rename_default
-            // 
-            this.chk_rename_default.AutoSize = true;
-            this.chk_rename_default.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.chk_rename_default.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.chk_rename_default.Location = new System.Drawing.Point(12, 188);
-            this.chk_rename_default.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_rename_default.Name = "chk_rename_default";
-            this.chk_rename_default.Size = new System.Drawing.Size(440, 20);
-            this.chk_rename_default.TabIndex = 12;
-            this.chk_rename_default.Text = "Selecione para renomear os arquivos default (config.ini e painel01_nfe.ini)";
-            this.chk_rename_default.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Location = new System.Drawing.Point(8, 352);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(449, 19);
-            this.panel1.TabIndex = 10;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.AccessibleRole = System.Windows.Forms.AccessibleRole.Alert;
-            this.progressBar1.Location = new System.Drawing.Point(4, 4);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(4);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(442, 11);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 9;
-            // 
-            // chk_deleteCompactados
-            // 
-            this.chk_deleteCompactados.AutoSize = true;
-            this.chk_deleteCompactados.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.chk_deleteCompactados.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.chk_deleteCompactados.Location = new System.Drawing.Point(11, 158);
-            this.chk_deleteCompactados.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_deleteCompactados.Name = "chk_deleteCompactados";
-            this.chk_deleteCompactados.Size = new System.Drawing.Size(422, 20);
-            this.chk_deleteCompactados.TabIndex = 8;
-            this.chk_deleteCompactados.Text = "Selecione para deletar os arquivos compactados ao finalizar a extração";
-            this.chk_deleteCompactados.UseVisualStyleBackColor = true;
-            // 
-            // obtemDiretorios
-            // 
-            this.obtemDiretorios.Location = new System.Drawing.Point(456, 7);
-            this.obtemDiretorios.Margin = new System.Windows.Forms.Padding(4);
-            this.obtemDiretorios.Name = "obtemDiretorios";
-            this.obtemDiretorios.Size = new System.Drawing.Size(88, 26);
-            this.obtemDiretorios.TabIndex = 7;
-            this.obtemDiretorios.Text = "Procurar";
-            this.obtemDiretorios.UseVisualStyleBackColor = true;
-            this.obtemDiretorios.Click += new System.EventHandler(this.GetDirectory_Click);
-            // 
-            // listagemDiretorios
-            // 
-            this.listagemDiretorios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listagemDiretorios.FormattingEnabled = true;
-            this.listagemDiretorios.ItemHeight = 15;
-            this.listagemDiretorios.Location = new System.Drawing.Point(12, 11);
-            this.listagemDiretorios.Margin = new System.Windows.Forms.Padding(4);
-            this.listagemDiretorios.MultiColumn = true;
-            this.listagemDiretorios.Name = "listagemDiretorios";
-            this.listagemDiretorios.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listagemDiretorios.Size = new System.Drawing.Size(436, 139);
-            this.listagemDiretorios.TabIndex = 6;
-            this.listagemDiretorios.SelectedIndexChanged += new System.EventHandler(this.DirectoryList_SelectedIndexChanged);
-            // 
-            // processa
-            // 
-            this.processa.Location = new System.Drawing.Point(459, 344);
-            this.processa.Margin = new System.Windows.Forms.Padding(4);
-            this.processa.Name = "processa";
-            this.processa.Size = new System.Drawing.Size(84, 26);
-            this.processa.TabIndex = 5;
-            this.processa.Text = "Extrair";
-            this.processa.UseVisualStyleBackColor = true;
-            this.processa.Click += new System.EventHandler(this.Process_Click);
+            tabDescompacta.Controls.Add(lblProgresso);
+            tabDescompacta.Controls.Add(currentDirectory);
+            tabDescompacta.Controls.Add(chk_rename_default);
+            tabDescompacta.Controls.Add(panel1);
+            tabDescompacta.Controls.Add(chk_deleteCompactados);
+            tabDescompacta.Controls.Add(obtemDiretorios);
+            tabDescompacta.Controls.Add(listagemDiretorios);
+            tabDescompacta.Controls.Add(processa);
+            tabDescompacta.Location = new Point(4, 29);
+            tabDescompacta.Margin = new Padding(5);
+            tabDescompacta.Name = "tabDescompacta";
+            tabDescompacta.Padding = new Padding(5);
+            tabDescompacta.Size = new Size(632, 510);
+            tabDescompacta.TabIndex = 1;
+            tabDescompacta.Text = "Diretórios a serem extraídos.";
+            tabDescompacta.UseVisualStyleBackColor = true;
             // 
             // lblProgresso
             // 
-            this.lblProgresso.AutoSize = true;
-            this.lblProgresso.Location = new System.Drawing.Point(8, 325);
-            this.lblProgresso.Name = "lblProgresso";
-            this.lblProgresso.Size = new System.Drawing.Size(32, 15);
-            this.lblProgresso.TabIndex = 15;
-            this.lblProgresso.Text = "label";
+            lblProgresso.AutoSize = true;
+            lblProgresso.ForeColor = Color.Blue;
+            lblProgresso.Location = new Point(9, 433);
+            lblProgresso.Name = "lblProgresso";
+            lblProgresso.Size = new Size(42, 20);
+            lblProgresso.TabIndex = 15;
+            lblProgresso.Text = "label";
+            // 
+            // currentDirectory
+            // 
+            currentDirectory.Enabled = false;
+            currentDirectory.Location = new Point(9, 320);
+            currentDirectory.Margin = new Padding(5);
+            currentDirectory.Multiline = true;
+            currentDirectory.Name = "currentDirectory";
+            currentDirectory.ScrollBars = ScrollBars.Vertical;
+            currentDirectory.Size = new Size(607, 99);
+            currentDirectory.TabIndex = 14;
+            // 
+            // chk_rename_default
+            // 
+            chk_rename_default.AutoSize = true;
+            chk_rename_default.FlatStyle = FlatStyle.System;
+            chk_rename_default.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            chk_rename_default.Location = new Point(14, 251);
+            chk_rename_default.Margin = new Padding(5);
+            chk_rename_default.Name = "chk_rename_default";
+            chk_rename_default.Size = new Size(460, 21);
+            chk_rename_default.TabIndex = 12;
+            chk_rename_default.Text = "Selecione para renomear os arquivos default (config.ini e painel01_nfe.ini)";
+            chk_rename_default.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(progressBar1);
+            panel1.Location = new Point(9, 469);
+            panel1.Margin = new Padding(5);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(513, 25);
+            panel1.TabIndex = 10;
+            // 
+            // progressBar1
+            // 
+            progressBar1.AccessibleRole = AccessibleRole.Alert;
+            progressBar1.Location = new Point(5, 5);
+            progressBar1.Margin = new Padding(5);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(505, 15);
+            progressBar1.Style = ProgressBarStyle.Continuous;
+            progressBar1.TabIndex = 9;
+            // 
+            // chk_deleteCompactados
+            // 
+            chk_deleteCompactados.AutoSize = true;
+            chk_deleteCompactados.FlatStyle = FlatStyle.System;
+            chk_deleteCompactados.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            chk_deleteCompactados.Location = new Point(13, 211);
+            chk_deleteCompactados.Margin = new Padding(5);
+            chk_deleteCompactados.Name = "chk_deleteCompactados";
+            chk_deleteCompactados.Size = new Size(449, 21);
+            chk_deleteCompactados.TabIndex = 8;
+            chk_deleteCompactados.Text = "Selecione para deletar os arquivos compactados ao finalizar a extração";
+            chk_deleteCompactados.UseVisualStyleBackColor = true;
+            // 
+            // obtemDiretorios
+            // 
+            obtemDiretorios.Image = (Image)resources.GetObject("obtemDiretorios.Image");
+            obtemDiretorios.ImageAlign = ContentAlignment.MiddleLeft;
+            obtemDiretorios.Location = new Point(515, 15);
+            obtemDiretorios.Margin = new Padding(5);
+            obtemDiretorios.Name = "obtemDiretorios";
+            obtemDiretorios.Size = new Size(110, 52);
+            obtemDiretorios.TabIndex = 7;
+            obtemDiretorios.Text = "Procurar";
+            obtemDiretorios.TextImageRelation = TextImageRelation.ImageBeforeText;
+            obtemDiretorios.UseVisualStyleBackColor = true;
+            obtemDiretorios.Click += GetDirectory_Click;
+            // 
+            // listagemDiretorios
+            // 
+            listagemDiretorios.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            listagemDiretorios.FormattingEnabled = true;
+            listagemDiretorios.ItemHeight = 20;
+            listagemDiretorios.Location = new Point(14, 15);
+            listagemDiretorios.Margin = new Padding(5);
+            listagemDiretorios.MultiColumn = true;
+            listagemDiretorios.Name = "listagemDiretorios";
+            listagemDiretorios.SelectionMode = SelectionMode.MultiExtended;
+            listagemDiretorios.Size = new Size(497, 184);
+            listagemDiretorios.TabIndex = 6;
+            listagemDiretorios.SelectedIndexChanged += DirectoryList_SelectedIndexChanged;
+            // 
+            // processa
+            // 
+            processa.Image = Properties.Resources.desc;
+            processa.ImageAlign = ContentAlignment.MiddleLeft;
+            processa.Location = new Point(525, 449);
+            processa.Margin = new Padding(5);
+            processa.Name = "processa";
+            processa.Size = new Size(96, 45);
+            processa.TabIndex = 5;
+            processa.Text = "Extrair";
+            processa.TextImageRelation = TextImageRelation.ImageBeforeText;
+            processa.UseVisualStyleBackColor = true;
+            processa.Click += Process_Click;
             // 
             // RarExtractor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 412);
-            this.Controls.Add(this.tab3);
-            this.Name = "RarExtractor";
-            this.Text = "RarExtractor";
-            this.tab3.ResumeLayout(false);
-            this.tabDescompacta.ResumeLayout(false);
-            this.tabDescompacta.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(645, 549);
+            Controls.Add(tab3);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "RarExtractor";
+            Text = "RarExtractor";
+            tab3.ResumeLayout(false);
+            tabDescompacta.ResumeLayout(false);
+            tabDescompacta.PerformLayout();
+            panel1.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion

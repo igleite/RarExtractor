@@ -214,5 +214,6 @@ namespace RarExtractor
             System.Windows.Forms.Application.DoEvents();
             Refresh();
         }
-    }
+
+        }
 }
