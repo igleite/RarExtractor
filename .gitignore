@@ -1,0 +1,17 @@
+
+.vs/RarExtractor/FileContentIndex/270df9ba-6bb7-478d-9618-3f2c556a99d1.vsidx
+.vs/RarExtractor/FileContentIndex/read.lock
+.vs/RarExtractor/v17/.futdcache.v2
+.vs/RarExtractor/v17/.suo
+RarExtractor/obj/Release/net7.0-windows/RarExtractor.csproj.AssemblyReference.cache
+RarExtractor/obj/Release/net7.0-windows/RarExtractor.GlobalUsings.g.cs
+.vs/RarExtractor/FileContentIndex/2d7fd2b9-059b-4907-a3dc-785f35ad2cff.vsidx
+RarExtractor/obj/Release/net7.0-windows/RarExtractor.csproj.FileListAbsolute.txt
+RarExtractor/bin/Release/net7.0-windows/RarExtractor.dll
+*.exe
+*.json
+*.pdb
+*.cache
+*.props
+*.dll
+*.targets
