@@ -40,6 +40,15 @@ namespace RarExtractor
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
+
+                List<string> directories = listagemDiretorios.Items.Cast<string>().ToList();
+                var selectedDirectories = directories.Where(d => d == folderBrowserDialog1.SelectedPath).ToList();
+                if (selectedDirectories.Count > 0)
+                {
+                    ShowErrorMessage("O diretório selecionado já foi adicionado!");
+                    return;
+                }
+
                 listagemDiretorios.Items.Add(folderBrowserDialog1.SelectedPath);
                 EnableControls(true);
             }
