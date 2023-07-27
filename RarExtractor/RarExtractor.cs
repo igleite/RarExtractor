@@ -78,6 +78,8 @@ namespace RarExtractor
             EnableControls(false, false, false);
             currentDirectory.ResetText();
 
+            int progressDirectories = 0;
+
             List<string> directories = listagemDiretorios.Items.Cast<string>().ToList();
             foreach (string directory in directories)
             {
@@ -85,10 +87,12 @@ namespace RarExtractor
 
                 progressBar1.Maximum = subDirectories.Count();
                 progressBar1.Value = 0;
+                progressDirectories += 1;
+
                 foreach (string subDirectory in subDirectories)
                 {
                     progressBar1.Value += 1;
-                    LabelProgressoText = $"Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
+                    LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
 
                     await ExtractFilesFromDirectory(subDirectory);
                 }
