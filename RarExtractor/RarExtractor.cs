@@ -32,6 +32,7 @@ namespace RarExtractor
             chk_deleteCompactados.Enabled = isEnabled;
             chk_rename_default.Enabled = isEnabled;
 
+            listagemDiretorios.Enabled = isEnabledDirectories;
             obtemDiretorios.Enabled = isEnabledDirectories;
             processa.Enabled = isEnabledProcess;
         }
