@@ -229,5 +229,5 @@ namespace RarExtractor
             Refresh();
         }
 
-    }       
+    }
 }
