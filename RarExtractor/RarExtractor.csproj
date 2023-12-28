@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>rar_16033.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="rar_16033.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SharpCompress" Version="0.33.0" />

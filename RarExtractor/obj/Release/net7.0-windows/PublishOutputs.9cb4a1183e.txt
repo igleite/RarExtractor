@@ -1,0 +1,6 @@
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\RarExtractor.exe
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\RarExtractor.dll
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\RarExtractor.deps.json
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\RarExtractor.runtimeconfig.json
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\RarExtractor.pdb
+C:\Users\dpnew\OneDrive\Área de Trabalho\RAR\SharpCompress.dll
