@@ -7,6 +7,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>rar_16033.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <RepositoryUrl>https://github.com/igleite/RarExtractor</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
