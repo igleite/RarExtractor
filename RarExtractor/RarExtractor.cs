@@ -104,17 +104,30 @@ namespace RarExtractor
             foreach (string directory in directories)
             {
                 string[] subDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
-
-                progressBar1.Maximum = subDirectories.Count();
-                progressBar1.Value = 0;
-                progressDirectories += 1;
-
-                foreach (string subDirectory in subDirectories)
+                if (subDirectories.Length == 0)
                 {
+                    progressBar1.Maximum = directories.Count();
+                    progressBar1.Value = 0;
+                    progressDirectories += 1;
+
                     progressBar1.Value += 1;
                     LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
 
-                    await ExtractFilesFromDirectory(subDirectory);
+                    await ExtractFilesFromDirectory(directory);
+                }
+                else
+                {
+                    progressBar1.Maximum = subDirectories.Count();
+                    progressBar1.Value = 0;
+                    progressDirectories += 1;
+
+                    foreach (string subDirectory in subDirectories)
+                    {
+                        progressBar1.Value += 1;
+                        LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
+
+                        await ExtractFilesFromDirectory(subDirectory);
+                    }
                 }
 
                 // Atualiza a interface do usuário após a extração de cada diretório
@@ -148,38 +161,36 @@ namespace RarExtractor
             }
         }
 
-        private IEnumerable<string> GetRarFilesInDirectory(string directory)
+        private static IEnumerable<string> GetRarFilesInDirectory(string directory)
         {
             return Directory.GetFiles(directory)
                 .Where(file => file.EndsWith(RarFileExtension));
         }
 
-        private void ExtractEntriesFromRarFile(string rarFile, string directory, Dictionary<string, DateTime> extractedFilesDictionary)
+        private static void ExtractEntriesFromRarFile(string rarFile, string directory, Dictionary<string, DateTime> extractedFilesDictionary)
         {
-            using (var archive = RarArchive.Open(rarFile))
+            using var archive = RarArchive.Open(rarFile);
+            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
             {
-                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                if (!extractedFilesDictionary.ContainsKey(entry.Key))
                 {
-                    if (!extractedFilesDictionary.ContainsKey(entry.Key))
-                    {
-                        extractedFilesDictionary.Add(entry.Key, entry.LastModifiedTime.GetValueOrDefault());
-                        entry.WriteToDirectory(directory, GetExtractionOptions());
-                    }
-                    else
-                    {
-                        var existingEntryLastModifiedTime = extractedFilesDictionary[entry.Key];
+                    extractedFilesDictionary.Add(entry.Key, entry.LastModifiedTime.GetValueOrDefault());
+                    entry.WriteToDirectory(directory, GetExtractionOptions());
+                }
+                else
+                {
+                    var existingEntryLastModifiedTime = extractedFilesDictionary[entry.Key];
 
-                        if (entry.LastModifiedTime > existingEntryLastModifiedTime)
-                        {
-                            extractedFilesDictionary[entry.Key] = entry.LastModifiedTime.GetValueOrDefault();
-                            entry.WriteToDirectory(directory, GetExtractionOptions());
-                        }
+                    if (entry.LastModifiedTime > existingEntryLastModifiedTime)
+                    {
+                        extractedFilesDictionary[entry.Key] = entry.LastModifiedTime.GetValueOrDefault();
+                        entry.WriteToDirectory(directory, GetExtractionOptions());
                     }
                 }
             }
         }
 
-        private ExtractionOptions GetExtractionOptions()
+        private static ExtractionOptions GetExtractionOptions()
         {
             return new ExtractionOptions
             {
@@ -189,7 +200,7 @@ namespace RarExtractor
             };
         }
 
-        private void DeleteRarFileIfRequired(string rarFile, bool deleteCompactadosChecked)
+        private static void DeleteRarFileIfRequired(string rarFile, bool deleteCompactadosChecked)
         {
             if (deleteCompactadosChecked)
             {
@@ -218,24 +229,24 @@ namespace RarExtractor
             }
         }
 
-        private void RenameFile(string originalName, string newName)
+        private static void RenameFile(string originalName, string newName)
         {
             File.Move(originalName, newName);
         }
 
-        private void ShowErrorMessage(string message)
+        private static void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void ShowSuccessMessage(string message)
+        private static void ShowSuccessMessage(string message)
         {
             MessageBox.Show(message, "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void UpdateUI()
         {
-            System.Windows.Forms.Application.DoEvents();
+            Application.DoEvents();
             Refresh();
         }
 
