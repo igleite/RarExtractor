@@ -1,6 +1,8 @@
 ﻿using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
+using System.Text;
+using System.Windows.Forms;
 
 namespace RarExtractor
 {
@@ -62,7 +64,8 @@ namespace RarExtractor
                 listagemDiretorios.Items.Remove(listagemDiretorios.SelectedItem);
             }
 
-            EnableControls(listagemDiretorios.Items.Count > 0, true, false);
+            bool enable = listagemDiretorios.Items.Count > 0;
+            EnableControls(isEnabled: enable, isEnabledProcess: enable);
         }
 
         private async void Process_Click(object sender, EventArgs e)
@@ -73,66 +76,105 @@ namespace RarExtractor
                 return;
             }
 
-            await ExtractFilesAsync();
-
-
-            ShowSuccessMessage("Arquivos descompactados com sucesso!");
-            progressBar1.Value = 0;
-            LabelProgressoText = "";
-            lblProgresso.Text = LabelProgressoText;
-            EnableControls(true);
-
-            // Abrir a pasta selecionada
-            string selectedDirectory = listagemDiretorios.Items.Cast<string>().FirstOrDefault();
-            if (!string.IsNullOrEmpty(selectedDirectory) && Directory.Exists(selectedDirectory))
+            var (success, messages) = await ExtractFilesAsync();
+            if (!success)
             {
-                System.Diagnostics.Process.Start("explorer.exe", selectedDirectory);
+                StringBuilder message = new StringBuilder();
+                foreach (var item in messages)
+                {
+                    message.AppendLine(item);
+                }
+
+                ShowErrorMessage(message.ToString());
+            } 
+            else
+            {
+                ShowSuccessMessage("Arquivos descompactados com sucesso!");
+
+                // Abrir a pasta selecionada
+                string selectedDirectory = listagemDiretorios.Items.Cast<string>().FirstOrDefault() ?? "";
+                if (!string.IsNullOrEmpty(selectedDirectory) && Directory.Exists(selectedDirectory))
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", selectedDirectory);
+                }
             }
 
+            progressBar1.Value = 0;
+            LabelProgressoText = string.Empty;
+            lblProgresso.Text = LabelProgressoText;
             EnableControls(true);
         }
 
 
-        private async Task ExtractFilesAsync()
+        private async Task<(bool success, IEnumerable<string> messages)> ExtractFilesAsync()
         {
-            EnableControls(false, false, false);
-            currentDirectory.ResetText();
+            bool success = false;
+            List<string> messages = new();
 
-            int progressDirectories = 0;
-
-            List<string> directories = listagemDiretorios.Items.Cast<string>().ToList();
-            foreach (string directory in directories)
+            try
             {
-                string[] subDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
-                if (subDirectories.Length == 0)
+                EnableControls(false, false, false);
+
+                currentDirectory.ResetText();
+
+                int progressDirectories = 0;
+
+                List<string> directories = listagemDiretorios.Items.Cast<string>().ToList();
+
+                foreach (string directory in directories)
                 {
-                    progressBar1.Maximum = directories.Count();
-                    progressBar1.Value = 0;
-                    progressDirectories += 1;
-
-                    progressBar1.Value += 1;
-                    LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
-
-                    await ExtractFilesFromDirectory(directory);
-                }
-                else
-                {
-                    progressBar1.Maximum = subDirectories.Count();
-                    progressBar1.Value = 0;
-                    progressDirectories += 1;
-
-                    foreach (string subDirectory in subDirectories)
+                    if (Directory.Exists(directory))
                     {
-                        progressBar1.Value += 1;
-                        LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
+                        string[] subDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
 
-                        await ExtractFilesFromDirectory(subDirectory);
+                        if (subDirectories.Length == 0)
+                        {
+                            progressBar1.Maximum = directories.Count;
+                            progressBar1.Value = progressDirectories;
+
+                            progressDirectories += 1;
+
+                            LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
+
+                            await ExtractFilesFromDirectory(directory);
+                        }
+                        else
+                        {
+                            progressBar1.Maximum = subDirectories.Length;
+                            progressBar1.Value = 0;
+
+                            progressDirectories += 1;
+
+                            foreach (string subDirectory in subDirectories)
+                            {
+                                progressBar1.Value += 1;
+                                LabelProgressoText = $"Extraindo diretório {progressDirectories} de {directories.Count} - Extraindo {progressBar1.Value} de {progressBar1.Maximum} subdiretórios. $msg";
+
+                                await ExtractFilesFromDirectory(subDirectory);
+                            }
+                        }
+
+                        UpdateUI();
+                        success = true;
+                    }
+                    else
+                    {
+                        messages.Add($"O diretório {directory} não existe.");
+                        success = false;
                     }
                 }
-
-                // Atualiza a interface do usuário após a extração de cada diretório
-                UpdateUI();
             }
+            catch (Exception ex)
+            {
+                messages.Add($"Erro durante a extração: {ex.Message}");
+                success = false;
+            }
+            finally
+            {
+                EnableControls(true, true, true);
+            }
+
+            return (success, messages);
         }
 
         private async Task ExtractFilesFromDirectory(string directory)
