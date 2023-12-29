@@ -81,7 +81,17 @@ namespace RarExtractor
             LabelProgressoText = "";
             lblProgresso.Text = LabelProgressoText;
             EnableControls(true);
+
+            // Abrir a pasta selecionada
+            string selectedDirectory = listagemDiretorios.Items.Cast<string>().FirstOrDefault();
+            if (!string.IsNullOrEmpty(selectedDirectory) && Directory.Exists(selectedDirectory))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", selectedDirectory);
+            }
+
+            EnableControls(true);
         }
+
 
         private async Task ExtractFilesAsync()
         {
@@ -229,5 +239,5 @@ namespace RarExtractor
             Refresh();
         }
 
-    }       
+    }
 }

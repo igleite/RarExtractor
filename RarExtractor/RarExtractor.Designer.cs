@@ -195,6 +195,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(645, 549);
             Controls.Add(tab3);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
             Name = "RarExtractor";
             Text = "RarExtractor";
