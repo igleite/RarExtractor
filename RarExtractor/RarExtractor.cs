@@ -321,7 +321,49 @@ namespace RarExtractor
                 MessageBox.Show("Adicione pelo menos um diretório antes de compactar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void ContarBtn_Click(object sender, EventArgs e)
+        {
+            // Verificar se há itens no ListBox
+            if (listagemDiretorios.Items.Count > 0)
+            {
+                // Obter o caminho do primeiro diretório no ListBox (você pode adaptar para percorrer todos os itens)
+                string diretorioSelecionado = listagemDiretorios.Items[0].ToString();
+
+                try
+                {
+                    int quantidadeDeArquivos = ContarArquivos(diretorioSelecionado);
+
+                    MessageBox.Show($"O diretório '{diretorioSelecionado}' contém {quantidadeDeArquivos} arquivo(s).",
+                                    "Contagem de Arquivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao contar os arquivos: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Adicione pelo menos um diretório antes de contar os arquivos.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private int ContarArquivos(string diretorio)
+        {
+            // Verificar se o diretório existe
+            if (Directory.Exists(diretorio))
+            {
+                // Recursivamente contar arquivos nas subpastas
+                int quantidadeDeArquivos = Directory.GetFiles(diretorio, "*", SearchOption.AllDirectories).Length;
+
+                return quantidadeDeArquivos;
+            }
+            else
+            {
+                throw new DirectoryNotFoundException($"O diretório '{diretorio}' não existe.");
+            }
+        }
     }
 
-    
+
 }

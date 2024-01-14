@@ -32,6 +32,7 @@
             folderBrowserDialog1 = new FolderBrowserDialog();
             tab3 = new TabControl();
             tabDescompacta = new TabPage();
+            CompactarBtn = new Button();
             lblProgresso = new Label();
             currentDirectory = new TextBox();
             chk_rename_default = new CheckBox();
@@ -41,7 +42,7 @@
             obtemDiretorios = new Button();
             listagemDiretorios = new ListBox();
             processa = new Button();
-            CompactarBtn = new Button();
+            ContarBtn = new Button();
             tab3.SuspendLayout();
             tabDescompacta.SuspendLayout();
             panel1.SuspendLayout();
@@ -57,7 +58,7 @@
             // 
             tab3.Controls.Add(tabDescompacta);
             tab3.Location = new Point(2, 2);
-            tab3.Margin = new Padding(4, 4, 4, 4);
+            tab3.Margin = new Padding(4);
             tab3.Name = "tab3";
             tab3.SelectedIndex = 0;
             tab3.Size = new Size(560, 407);
@@ -65,6 +66,7 @@
             // 
             // tabDescompacta
             // 
+            tabDescompacta.Controls.Add(ContarBtn);
             tabDescompacta.Controls.Add(CompactarBtn);
             tabDescompacta.Controls.Add(lblProgresso);
             tabDescompacta.Controls.Add(currentDirectory);
@@ -75,13 +77,27 @@
             tabDescompacta.Controls.Add(listagemDiretorios);
             tabDescompacta.Controls.Add(processa);
             tabDescompacta.Location = new Point(4, 24);
-            tabDescompacta.Margin = new Padding(4, 4, 4, 4);
+            tabDescompacta.Margin = new Padding(4);
             tabDescompacta.Name = "tabDescompacta";
-            tabDescompacta.Padding = new Padding(4, 4, 4, 4);
+            tabDescompacta.Padding = new Padding(4);
             tabDescompacta.Size = new Size(552, 379);
             tabDescompacta.TabIndex = 1;
             tabDescompacta.Text = "Diretórios a serem extraídos.";
             tabDescompacta.UseVisualStyleBackColor = true;
+            // 
+            // CompactarBtn
+            // 
+            CompactarBtn.Image = (Image)resources.GetObject("CompactarBtn.Image");
+            CompactarBtn.ImageAlign = ContentAlignment.TopLeft;
+            CompactarBtn.Location = new Point(342, 337);
+            CompactarBtn.Margin = new Padding(4);
+            CompactarBtn.Name = "CompactarBtn";
+            CompactarBtn.Size = new Size(109, 34);
+            CompactarBtn.TabIndex = 16;
+            CompactarBtn.Text = "Compactar";
+            CompactarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            CompactarBtn.UseVisualStyleBackColor = true;
+            CompactarBtn.Click += CompactarBtn_Click;
             // 
             // lblProgresso
             // 
@@ -97,7 +113,7 @@
             // 
             currentDirectory.Enabled = false;
             currentDirectory.Location = new Point(8, 240);
-            currentDirectory.Margin = new Padding(4, 4, 4, 4);
+            currentDirectory.Margin = new Padding(4);
             currentDirectory.Multiline = true;
             currentDirectory.Name = "currentDirectory";
             currentDirectory.ScrollBars = ScrollBars.Vertical;
@@ -110,7 +126,7 @@
             chk_rename_default.FlatStyle = FlatStyle.System;
             chk_rename_default.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             chk_rename_default.Location = new Point(12, 188);
-            chk_rename_default.Margin = new Padding(4, 4, 4, 4);
+            chk_rename_default.Margin = new Padding(4);
             chk_rename_default.Name = "chk_rename_default";
             chk_rename_default.Size = new Size(440, 20);
             chk_rename_default.TabIndex = 12;
@@ -121,7 +137,7 @@
             // 
             panel1.Controls.Add(progressBar1);
             panel1.Location = new Point(8, 352);
-            panel1.Margin = new Padding(4, 4, 4, 4);
+            panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
             panel1.Size = new Size(307, 19);
             panel1.TabIndex = 10;
@@ -130,7 +146,7 @@
             // 
             progressBar1.AccessibleRole = AccessibleRole.Alert;
             progressBar1.Location = new Point(4, 4);
-            progressBar1.Margin = new Padding(4, 4, 4, 4);
+            progressBar1.Margin = new Padding(4);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(299, 11);
             progressBar1.Style = ProgressBarStyle.Continuous;
@@ -142,7 +158,7 @@
             chk_deleteCompactados.FlatStyle = FlatStyle.System;
             chk_deleteCompactados.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             chk_deleteCompactados.Location = new Point(11, 158);
-            chk_deleteCompactados.Margin = new Padding(4, 4, 4, 4);
+            chk_deleteCompactados.Margin = new Padding(4);
             chk_deleteCompactados.Name = "chk_deleteCompactados";
             chk_deleteCompactados.Size = new Size(422, 20);
             chk_deleteCompactados.TabIndex = 8;
@@ -154,7 +170,7 @@
             obtemDiretorios.Image = (Image)resources.GetObject("obtemDiretorios.Image");
             obtemDiretorios.ImageAlign = ContentAlignment.MiddleLeft;
             obtemDiretorios.Location = new Point(451, 11);
-            obtemDiretorios.Margin = new Padding(4, 4, 4, 4);
+            obtemDiretorios.Margin = new Padding(4);
             obtemDiretorios.Name = "obtemDiretorios";
             obtemDiretorios.Size = new Size(96, 39);
             obtemDiretorios.TabIndex = 7;
@@ -169,7 +185,7 @@
             listagemDiretorios.FormattingEnabled = true;
             listagemDiretorios.ItemHeight = 15;
             listagemDiretorios.Location = new Point(12, 11);
-            listagemDiretorios.Margin = new Padding(4, 4, 4, 4);
+            listagemDiretorios.Margin = new Padding(4);
             listagemDiretorios.MultiColumn = true;
             listagemDiretorios.Name = "listagemDiretorios";
             listagemDiretorios.SelectionMode = SelectionMode.MultiExtended;
@@ -182,7 +198,7 @@
             processa.Image = Properties.Resources.desc;
             processa.ImageAlign = ContentAlignment.MiddleLeft;
             processa.Location = new Point(459, 337);
-            processa.Margin = new Padding(4, 4, 4, 4);
+            processa.Margin = new Padding(4);
             processa.Name = "processa";
             processa.Size = new Size(84, 34);
             processa.TabIndex = 5;
@@ -191,19 +207,19 @@
             processa.UseVisualStyleBackColor = true;
             processa.Click += Process_Click;
             // 
-            // CompactarBtn
+            // ContarBtn
             // 
-            CompactarBtn.Image = (Image)resources.GetObject("CompactarBtn.Image");
-            CompactarBtn.ImageAlign = ContentAlignment.TopLeft;
-            CompactarBtn.Location = new Point(342, 337);
-            CompactarBtn.Margin = new Padding(4);
-            CompactarBtn.Name = "CompactarBtn";
-            CompactarBtn.Size = new Size(109, 34);
-            CompactarBtn.TabIndex = 16;
-            CompactarBtn.Text = "Compactar";
-            CompactarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
-            CompactarBtn.UseVisualStyleBackColor = true;
-            CompactarBtn.Click += CompactarBtn_Click;
+            ContarBtn.Image = (Image)resources.GetObject("ContarBtn.Image");
+            ContarBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            ContarBtn.Location = new Point(452, 58);
+            ContarBtn.Margin = new Padding(4);
+            ContarBtn.Name = "ContarBtn";
+            ContarBtn.Size = new Size(96, 39);
+            ContarBtn.TabIndex = 17;
+            ContarBtn.Text = "Contar";
+            ContarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            ContarBtn.UseVisualStyleBackColor = true;
+            ContarBtn.Click += ContarBtn_Click;
             // 
             // RarExtractor
             // 
@@ -236,5 +252,6 @@
         private Button processa;
         private Label lblProgresso;
         private Button CompactarBtn;
+        private Button ContarBtn;
     }
 }
