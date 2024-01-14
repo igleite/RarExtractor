@@ -1,6 +1,7 @@
 ﻿using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
+using System.IO.Compression;
 using System.Text;
 using System.Windows.Forms;
 
@@ -86,7 +87,7 @@ namespace RarExtractor
                 }
 
                 ShowErrorMessage(message.ToString());
-            } 
+            }
             else
             {
                 ShowSuccessMessage("Arquivos descompactados com sucesso!");
@@ -292,5 +293,35 @@ namespace RarExtractor
             Refresh();
         }
 
+        private void CompactarBtn_Click(object sender, EventArgs e)
+        {
+            // Verificar se há itens no ListBox
+            if (listagemDiretorios.Items.Count > 0)
+            {
+                // Obter o caminho da pasta no ListBox
+                string pastaSelecionada = listagemDiretorios.Items[0].ToString(); // Use o primeiro item como exemplo
+
+                // Definir o nome do arquivo compactado (zip) com base no nome da pasta
+                string arquivoZip = Path.Combine(Path.GetDirectoryName(pastaSelecionada), $"{Path.GetFileName(pastaSelecionada)}.zip");
+
+                try
+                {
+                    // Compactar a pasta
+                    ZipFile.CreateFromDirectory(pastaSelecionada, arquivoZip);
+
+                    MessageBox.Show("Pasta compactada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao compactar a pasta: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Adicione pelo menos um diretório antes de compactar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
+
+    
 }

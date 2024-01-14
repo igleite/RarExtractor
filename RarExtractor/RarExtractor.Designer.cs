@@ -41,6 +41,7 @@
             obtemDiretorios = new Button();
             listagemDiretorios = new ListBox();
             processa = new Button();
+            CompactarBtn = new Button();
             tab3.SuspendLayout();
             tabDescompacta.SuspendLayout();
             panel1.SuspendLayout();
@@ -55,15 +56,16 @@
             // tab3
             // 
             tab3.Controls.Add(tabDescompacta);
-            tab3.Location = new Point(2, 3);
-            tab3.Margin = new Padding(5);
+            tab3.Location = new Point(2, 2);
+            tab3.Margin = new Padding(4, 4, 4, 4);
             tab3.Name = "tab3";
             tab3.SelectedIndex = 0;
-            tab3.Size = new Size(640, 543);
+            tab3.Size = new Size(560, 407);
             tab3.TabIndex = 4;
             // 
             // tabDescompacta
             // 
+            tabDescompacta.Controls.Add(CompactarBtn);
             tabDescompacta.Controls.Add(lblProgresso);
             tabDescompacta.Controls.Add(currentDirectory);
             tabDescompacta.Controls.Add(chk_rename_default);
@@ -72,11 +74,11 @@
             tabDescompacta.Controls.Add(obtemDiretorios);
             tabDescompacta.Controls.Add(listagemDiretorios);
             tabDescompacta.Controls.Add(processa);
-            tabDescompacta.Location = new Point(4, 29);
-            tabDescompacta.Margin = new Padding(5);
+            tabDescompacta.Location = new Point(4, 24);
+            tabDescompacta.Margin = new Padding(4, 4, 4, 4);
             tabDescompacta.Name = "tabDescompacta";
-            tabDescompacta.Padding = new Padding(5);
-            tabDescompacta.Size = new Size(632, 510);
+            tabDescompacta.Padding = new Padding(4, 4, 4, 4);
+            tabDescompacta.Size = new Size(552, 379);
             tabDescompacta.TabIndex = 1;
             tabDescompacta.Text = "Diretórios a serem extraídos.";
             tabDescompacta.UseVisualStyleBackColor = true;
@@ -85,21 +87,21 @@
             // 
             lblProgresso.AutoSize = true;
             lblProgresso.ForeColor = Color.Blue;
-            lblProgresso.Location = new Point(9, 433);
+            lblProgresso.Location = new Point(8, 325);
             lblProgresso.Name = "lblProgresso";
-            lblProgresso.Size = new Size(42, 20);
+            lblProgresso.Size = new Size(32, 15);
             lblProgresso.TabIndex = 15;
             lblProgresso.Text = "label";
             // 
             // currentDirectory
             // 
             currentDirectory.Enabled = false;
-            currentDirectory.Location = new Point(9, 320);
-            currentDirectory.Margin = new Padding(5);
+            currentDirectory.Location = new Point(8, 240);
+            currentDirectory.Margin = new Padding(4, 4, 4, 4);
             currentDirectory.Multiline = true;
             currentDirectory.Name = "currentDirectory";
             currentDirectory.ScrollBars = ScrollBars.Vertical;
-            currentDirectory.Size = new Size(607, 99);
+            currentDirectory.Size = new Size(532, 75);
             currentDirectory.TabIndex = 14;
             // 
             // chk_rename_default
@@ -107,10 +109,10 @@
             chk_rename_default.AutoSize = true;
             chk_rename_default.FlatStyle = FlatStyle.System;
             chk_rename_default.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            chk_rename_default.Location = new Point(14, 251);
-            chk_rename_default.Margin = new Padding(5);
+            chk_rename_default.Location = new Point(12, 188);
+            chk_rename_default.Margin = new Padding(4, 4, 4, 4);
             chk_rename_default.Name = "chk_rename_default";
-            chk_rename_default.Size = new Size(460, 21);
+            chk_rename_default.Size = new Size(440, 20);
             chk_rename_default.TabIndex = 12;
             chk_rename_default.Text = "Selecione para renomear os arquivos default (config.ini e painel01_nfe.ini)";
             chk_rename_default.UseVisualStyleBackColor = true;
@@ -118,19 +120,19 @@
             // panel1
             // 
             panel1.Controls.Add(progressBar1);
-            panel1.Location = new Point(9, 469);
-            panel1.Margin = new Padding(5);
+            panel1.Location = new Point(8, 352);
+            panel1.Margin = new Padding(4, 4, 4, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(513, 25);
+            panel1.Size = new Size(307, 19);
             panel1.TabIndex = 10;
             // 
             // progressBar1
             // 
             progressBar1.AccessibleRole = AccessibleRole.Alert;
-            progressBar1.Location = new Point(5, 5);
-            progressBar1.Margin = new Padding(5);
+            progressBar1.Location = new Point(4, 4);
+            progressBar1.Margin = new Padding(4, 4, 4, 4);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(505, 15);
+            progressBar1.Size = new Size(299, 11);
             progressBar1.Style = ProgressBarStyle.Continuous;
             progressBar1.TabIndex = 9;
             // 
@@ -139,10 +141,10 @@
             chk_deleteCompactados.AutoSize = true;
             chk_deleteCompactados.FlatStyle = FlatStyle.System;
             chk_deleteCompactados.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            chk_deleteCompactados.Location = new Point(13, 211);
-            chk_deleteCompactados.Margin = new Padding(5);
+            chk_deleteCompactados.Location = new Point(11, 158);
+            chk_deleteCompactados.Margin = new Padding(4, 4, 4, 4);
             chk_deleteCompactados.Name = "chk_deleteCompactados";
-            chk_deleteCompactados.Size = new Size(449, 21);
+            chk_deleteCompactados.Size = new Size(422, 20);
             chk_deleteCompactados.TabIndex = 8;
             chk_deleteCompactados.Text = "Selecione para deletar os arquivos compactados ao finalizar a extração";
             chk_deleteCompactados.UseVisualStyleBackColor = true;
@@ -151,10 +153,10 @@
             // 
             obtemDiretorios.Image = (Image)resources.GetObject("obtemDiretorios.Image");
             obtemDiretorios.ImageAlign = ContentAlignment.MiddleLeft;
-            obtemDiretorios.Location = new Point(515, 15);
-            obtemDiretorios.Margin = new Padding(5);
+            obtemDiretorios.Location = new Point(451, 11);
+            obtemDiretorios.Margin = new Padding(4, 4, 4, 4);
             obtemDiretorios.Name = "obtemDiretorios";
-            obtemDiretorios.Size = new Size(110, 52);
+            obtemDiretorios.Size = new Size(96, 39);
             obtemDiretorios.TabIndex = 7;
             obtemDiretorios.Text = "Procurar";
             obtemDiretorios.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -165,13 +167,13 @@
             // 
             listagemDiretorios.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             listagemDiretorios.FormattingEnabled = true;
-            listagemDiretorios.ItemHeight = 20;
-            listagemDiretorios.Location = new Point(14, 15);
-            listagemDiretorios.Margin = new Padding(5);
+            listagemDiretorios.ItemHeight = 15;
+            listagemDiretorios.Location = new Point(12, 11);
+            listagemDiretorios.Margin = new Padding(4, 4, 4, 4);
             listagemDiretorios.MultiColumn = true;
             listagemDiretorios.Name = "listagemDiretorios";
             listagemDiretorios.SelectionMode = SelectionMode.MultiExtended;
-            listagemDiretorios.Size = new Size(497, 184);
+            listagemDiretorios.Size = new Size(435, 139);
             listagemDiretorios.TabIndex = 6;
             listagemDiretorios.SelectedIndexChanged += DirectoryList_SelectedIndexChanged;
             // 
@@ -179,24 +181,37 @@
             // 
             processa.Image = Properties.Resources.desc;
             processa.ImageAlign = ContentAlignment.MiddleLeft;
-            processa.Location = new Point(525, 449);
-            processa.Margin = new Padding(5);
+            processa.Location = new Point(459, 337);
+            processa.Margin = new Padding(4, 4, 4, 4);
             processa.Name = "processa";
-            processa.Size = new Size(96, 45);
+            processa.Size = new Size(84, 34);
             processa.TabIndex = 5;
             processa.Text = "Extrair";
             processa.TextImageRelation = TextImageRelation.ImageBeforeText;
             processa.UseVisualStyleBackColor = true;
             processa.Click += Process_Click;
             // 
+            // CompactarBtn
+            // 
+            CompactarBtn.Image = (Image)resources.GetObject("CompactarBtn.Image");
+            CompactarBtn.ImageAlign = ContentAlignment.TopLeft;
+            CompactarBtn.Location = new Point(342, 337);
+            CompactarBtn.Margin = new Padding(4);
+            CompactarBtn.Name = "CompactarBtn";
+            CompactarBtn.Size = new Size(109, 34);
+            CompactarBtn.TabIndex = 16;
+            CompactarBtn.Text = "Compactar";
+            CompactarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            CompactarBtn.UseVisualStyleBackColor = true;
+            CompactarBtn.Click += CompactarBtn_Click;
+            // 
             // RarExtractor
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(645, 549);
+            ClientSize = new Size(564, 412);
             Controls.Add(tab3);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 4, 3, 4);
             Name = "RarExtractor";
             Text = "RarExtractor";
             tab3.ResumeLayout(false);
@@ -220,5 +235,6 @@
         private ListBox listagemDiretorios;
         private Button processa;
         private Label lblProgresso;
+        private Button CompactarBtn;
     }
 }
