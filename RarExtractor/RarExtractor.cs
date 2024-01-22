@@ -293,7 +293,7 @@ namespace RarExtractor
             Refresh();
         }
 
-        private void CompactarBtn_Click(object sender, EventArgs e)
+        private async void CompactarBtn_Click(object sender, EventArgs e)
         {
             // Verificar se há itens no ListBox
             if (listagemDiretorios.Items.Count > 0)
@@ -306,14 +306,57 @@ namespace RarExtractor
 
                 try
                 {
-                    // Compactar a pasta
-                    ZipFile.CreateFromDirectory(pastaSelecionada, arquivoZip);
+                    // Criar um novo arquivo Zip
+                    using (FileStream zipToCreate = new FileStream(arquivoZip, FileMode.Create))
+                    {
+                        using (ZipArchive archive = new ZipArchive(zipToCreate, ZipArchiveMode.Create))
+                        {
+                            // Obter a lista de arquivos a serem compactados
+                            string[] arquivos = Directory.GetFiles(pastaSelecionada, "*", SearchOption.AllDirectories);
 
-                    MessageBox.Show("Pasta compactada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // Definir o máximo da barra de progresso
+                            progressBar1.Maximum = arquivos.Length;
+
+                            // Compactar os arquivos
+                            for (int i = 0; i < arquivos.Length; i++)
+                            {
+                                // Atualizar o progresso
+                                progressBar1.Value = i + 1;
+
+                                // Atualizar a label de progresso
+                                lblProgresso.Text = $"Compactando arquivo {i + 1} de {arquivos.Length}";
+
+                                // Obter o caminho do arquivo
+                                string arquivo = arquivos[i];
+
+                                // Obter o caminho relativo para o arquivo dentro do arquivo Zip
+                                string entradaRelativa = arquivo.Substring(pastaSelecionada.Length + 1);
+
+                                // Criar uma entrada no arquivo Zip
+                                ZipArchiveEntry entry = archive.CreateEntry(entradaRelativa);
+
+                                // Escrever os dados do arquivo para a entrada do arquivo Zip
+                                using (FileStream fs = File.OpenRead(arquivo))
+                                using (Stream es = entry.Open())
+                                {
+                                    await fs.CopyToAsync(es);
+                                }
+                            }
+
+                            MessageBox.Show("Pasta compactada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Erro ao compactar a pasta: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    // Resetar a barra de progresso
+                    progressBar1.Value = 0;
+                    // Resetar a label de progresso
+                    lblProgresso.Text = "";
                 }
             }
             else
@@ -321,6 +364,7 @@ namespace RarExtractor
                 MessageBox.Show("Adicione pelo menos um diretório antes de compactar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+    
 
         private void ContarBtn_Click(object sender, EventArgs e)
         {
