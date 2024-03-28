@@ -32,6 +32,7 @@
             folderBrowserDialog1 = new FolderBrowserDialog();
             tab3 = new TabControl();
             tabDescompacta = new TabPage();
+            ContarBtn = new Button();
             CompactarBtn = new Button();
             lblProgresso = new Label();
             currentDirectory = new TextBox();
@@ -42,7 +43,6 @@
             obtemDiretorios = new Button();
             listagemDiretorios = new ListBox();
             processa = new Button();
-            ContarBtn = new Button();
             tab3.SuspendLayout();
             tabDescompacta.SuspendLayout();
             panel1.SuspendLayout();
@@ -84,6 +84,20 @@
             tabDescompacta.TabIndex = 1;
             tabDescompacta.Text = "Diretórios a serem extraídos.";
             tabDescompacta.UseVisualStyleBackColor = true;
+            // 
+            // ContarBtn
+            // 
+            ContarBtn.Image = (Image)resources.GetObject("ContarBtn.Image");
+            ContarBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            ContarBtn.Location = new Point(452, 58);
+            ContarBtn.Margin = new Padding(4);
+            ContarBtn.Name = "ContarBtn";
+            ContarBtn.Size = new Size(96, 39);
+            ContarBtn.TabIndex = 17;
+            ContarBtn.Text = "Contar";
+            ContarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            ContarBtn.UseVisualStyleBackColor = true;
+            ContarBtn.Click += ContarBtn_Click;
             // 
             // CompactarBtn
             // 
@@ -132,6 +146,7 @@
             chk_rename_default.TabIndex = 12;
             chk_rename_default.Text = "Selecione para renomear os arquivos default (config.ini e painel01_nfe.ini)";
             chk_rename_default.UseVisualStyleBackColor = true;
+            chk_rename_default.CheckedChanged += chk_CheckedChanged;
             // 
             // panel1
             // 
@@ -164,6 +179,7 @@
             chk_deleteCompactados.TabIndex = 8;
             chk_deleteCompactados.Text = "Selecione para deletar os arquivos compactados ao finalizar a extração";
             chk_deleteCompactados.UseVisualStyleBackColor = true;
+            chk_deleteCompactados.CheckedChanged += chk_CheckedChanged;
             // 
             // obtemDiretorios
             // 
@@ -195,7 +211,6 @@
             // 
             // processa
             // 
-            processa.Image = Properties.Resources.desc;
             processa.ImageAlign = ContentAlignment.MiddleLeft;
             processa.Location = new Point(459, 337);
             processa.Margin = new Padding(4);
@@ -206,20 +221,6 @@
             processa.TextImageRelation = TextImageRelation.ImageBeforeText;
             processa.UseVisualStyleBackColor = true;
             processa.Click += Process_Click;
-            // 
-            // ContarBtn
-            // 
-            ContarBtn.Image = (Image)resources.GetObject("ContarBtn.Image");
-            ContarBtn.ImageAlign = ContentAlignment.MiddleLeft;
-            ContarBtn.Location = new Point(452, 58);
-            ContarBtn.Margin = new Padding(4);
-            ContarBtn.Name = "ContarBtn";
-            ContarBtn.Size = new Size(96, 39);
-            ContarBtn.TabIndex = 17;
-            ContarBtn.Text = "Contar";
-            ContarBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
-            ContarBtn.UseVisualStyleBackColor = true;
-            ContarBtn.Click += ContarBtn_Click;
             // 
             // RarExtractor
             // 

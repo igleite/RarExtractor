@@ -1,9 +1,13 @@
 ﻿using SharpCompress.Archives;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
+using System.Formats.Tar;
+using System;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace RarExtractor
 {
@@ -27,10 +31,10 @@ namespace RarExtractor
             FormBorderStyle = FormBorderStyle.FixedSingle;
             StartPosition = FormStartPosition.CenterScreen;
             lblProgresso.Text = LabelProgressoText;
-            EnableControls(false, true, false);
+            EnableControls(false, true, false, false);
         }
 
-        private void EnableControls(bool isEnabled, bool isEnabledDirectories = true, bool isEnabledProcess = true)
+        private void EnableControls(bool isEnabled, bool isEnabledDirectories = true, bool isEnabledProcess = true, bool isEnableContarCompactar = true)
         {
             chk_deleteCompactados.Enabled = isEnabled;
             chk_rename_default.Enabled = isEnabled;
@@ -38,6 +42,9 @@ namespace RarExtractor
             listagemDiretorios.Enabled = isEnabledDirectories;
             obtemDiretorios.Enabled = isEnabledDirectories;
             processa.Enabled = isEnabledProcess;
+
+            ContarBtn.Enabled = isEnableContarCompactar;
+            CompactarBtn.Enabled = isEnableContarCompactar;
         }
 
         private void GetDirectory_Click(object sender, EventArgs e)
@@ -66,14 +73,13 @@ namespace RarExtractor
             }
 
             bool enable = listagemDiretorios.Items.Count > 0;
-            EnableControls(isEnabled: enable, isEnabledProcess: enable);
+            EnableControls(isEnabled: enable, isEnabledProcess: enable, isEnableContarCompactar: enable);
         }
 
         private async void Process_Click(object sender, EventArgs e)
         {
-            if (listagemDiretorios.Items.Count == 0)
+            if (!TemDiretorioSelecionado())
             {
-                ShowErrorMessage("Selecione ao menos um diretório para continuar!");
                 return;
             }
 
@@ -114,7 +120,7 @@ namespace RarExtractor
 
             try
             {
-                EnableControls(false, false, false);
+                EnableControls(false, false, false, false);
 
                 currentDirectory.ResetText();
 
@@ -172,7 +178,7 @@ namespace RarExtractor
             }
             finally
             {
-                EnableControls(true, true, true);
+                EnableControls(true, true, true, true);
             }
 
             return (success, messages);
@@ -295,116 +301,182 @@ namespace RarExtractor
 
         private async void CompactarBtn_Click(object sender, EventArgs e)
         {
-            // Verificar se há itens no ListBox
-            if (listagemDiretorios.Items.Count > 0)
+            if (!TemDiretorioSelecionado())
             {
-                // Obter o caminho da pasta no ListBox
-                string pastaSelecionada = listagemDiretorios.Items[0].ToString(); // Use o primeiro item como exemplo
+                return;
+            }
 
-                // Definir o nome do arquivo compactado (zip) com base no nome da pasta
-                string arquivoZip = Path.Combine(Path.GetDirectoryName(pastaSelecionada), $"{Path.GetFileName(pastaSelecionada)}.zip");
+            // Obter o caminho da pasta no ListBox
+            string pastaSelecionada = listagemDiretorios.Items[0].ToString(); // Use o primeiro item como exemplo
 
-                try
+            // Definir o nome do arquivo compactado (zip) com base no nome da pasta
+            string arquivoZip = Path.Combine(Path.GetDirectoryName(pastaSelecionada), $"{Path.GetFileName(pastaSelecionada)}.zip");
+
+            try
+            {
+                // Criar um novo arquivo Zip
+                using (FileStream zipToCreate = new FileStream(arquivoZip, FileMode.Create))
                 {
-                    // Criar um novo arquivo Zip
-                    using (FileStream zipToCreate = new FileStream(arquivoZip, FileMode.Create))
+                    using (ZipArchive archive = new ZipArchive(zipToCreate, ZipArchiveMode.Create))
                     {
-                        using (ZipArchive archive = new ZipArchive(zipToCreate, ZipArchiveMode.Create))
+                        // Obter a lista de arquivos a serem compactados
+                        string[] arquivos = Directory.GetFiles(pastaSelecionada, "*", SearchOption.AllDirectories);
+
+                        // Definir o máximo da barra de progresso
+                        progressBar1.Maximum = arquivos.Length;
+
+                        // Compactar os arquivos
+                        for (int i = 0; i < arquivos.Length; i++)
                         {
-                            // Obter a lista de arquivos a serem compactados
-                            string[] arquivos = Directory.GetFiles(pastaSelecionada, "*", SearchOption.AllDirectories);
+                            // Atualizar o progresso
+                            progressBar1.Value = i + 1;
 
-                            // Definir o máximo da barra de progresso
-                            progressBar1.Maximum = arquivos.Length;
+                            // Atualizar a label de progresso
+                            lblProgresso.Text = $"Compactando arquivo {i + 1} de {arquivos.Length}";
 
-                            // Compactar os arquivos
-                            for (int i = 0; i < arquivos.Length; i++)
+                            // Obter o caminho do arquivo
+                            string arquivo = arquivos[i];
+
+                            // Obter o caminho relativo para o arquivo dentro do arquivo Zip
+                            string entradaRelativa = arquivo.Substring(pastaSelecionada.Length + 1);
+
+                            // Criar uma entrada no arquivo Zip
+                            ZipArchiveEntry entry = archive.CreateEntry(entradaRelativa);
+
+                            // Escrever os dados do arquivo para a entrada do arquivo Zip
+                            using (FileStream fs = File.OpenRead(arquivo))
+                            using (Stream es = entry.Open())
                             {
-                                // Atualizar o progresso
-                                progressBar1.Value = i + 1;
-
-                                // Atualizar a label de progresso
-                                lblProgresso.Text = $"Compactando arquivo {i + 1} de {arquivos.Length}";
-
-                                // Obter o caminho do arquivo
-                                string arquivo = arquivos[i];
-
-                                // Obter o caminho relativo para o arquivo dentro do arquivo Zip
-                                string entradaRelativa = arquivo.Substring(pastaSelecionada.Length + 1);
-
-                                // Criar uma entrada no arquivo Zip
-                                ZipArchiveEntry entry = archive.CreateEntry(entradaRelativa);
-
-                                // Escrever os dados do arquivo para a entrada do arquivo Zip
-                                using (FileStream fs = File.OpenRead(arquivo))
-                                using (Stream es = entry.Open())
-                                {
-                                    await fs.CopyToAsync(es);
-                                }
+                                await fs.CopyToAsync(es);
                             }
-
-                            MessageBox.Show("Pasta compactada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
+
+                        MessageBox.Show("Pasta compactada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao compactar a pasta: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    // Resetar a barra de progresso
-                    progressBar1.Value = 0;
-                    // Resetar a label de progresso
-                    lblProgresso.Text = "";
-                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Adicione pelo menos um diretório antes de compactar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Erro ao compactar a pasta: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Resetar a barra de progresso
+                progressBar1.Value = 0;
+                // Resetar a label de progresso
+                lblProgresso.Text = string.Empty;
             }
         }
-    
+
 
         private void ContarBtn_Click(object sender, EventArgs e)
         {
-            // Verificar se há itens no ListBox
-            if (listagemDiretorios.Items.Count > 0)
+            if (!TemDiretorioSelecionado())
             {
-                // Obter o caminho do primeiro diretório no ListBox (você pode adaptar para percorrer todos os itens)
-                string diretorioSelecionado = listagemDiretorios.Items[0].ToString();
-
-                try
-                {
-                    int quantidadeDeArquivos = ContarArquivos(diretorioSelecionado);
-
-                    MessageBox.Show($"O diretório '{diretorioSelecionado}' contém {quantidadeDeArquivos} arquivo(s).",
-                                    "Contagem de Arquivos", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao contar os arquivos: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                return;
             }
-            else
+
+            var (success, messages) = ContarArquivos();
+
+            StringBuilder message = new StringBuilder();
+            foreach (var item in messages)
             {
-                MessageBox.Show("Adicione pelo menos um diretório antes de contar os arquivos.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                message.AppendLine(item);
             }
+
+            if (!success)
+            {
+                ShowErrorMessage(message.ToString());
+            }
+
+
+            ShowSuccessMessage(message.ToString());
         }
 
-        private int ContarArquivos(string diretorio)
+        private (bool success, IEnumerable<string> messages) ContarArquivos()
         {
-            // Verificar se o diretório existe
-            if (Directory.Exists(diretorio))
-            {
-                // Recursivamente contar arquivos nas subpastas
-                int quantidadeDeArquivos = Directory.GetFiles(diretorio, "*", SearchOption.AllDirectories).Length;
+            bool success = false;
+            List<string> messages = new();
 
-                return quantidadeDeArquivos;
-            }
-            else
+            try
             {
-                throw new DirectoryNotFoundException($"O diretório '{diretorio}' não existe.");
+                EnableControls(false, false, false, false);
+
+                currentDirectory.ResetText();
+
+                int progressDirectories = 0;
+
+                List<string> directories = listagemDiretorios.Items.Cast<string>().ToList();
+
+                foreach (string directory in directories)
+                {
+                    progressDirectories += 1;
+                    progressBar1.Maximum = directories.Count;
+                    progressBar1.Value = progressDirectories;
+
+                    lblProgresso.Text = $"Contando o diretório {progressDirectories} de {directories.Count()}.";
+                    UpdateUI();
+
+                    if (Directory.Exists(directory))
+                    {
+                        int quantidadeDeArquivos = Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Count();
+
+                        messages.Add($"O diretório '{directory}' contém {quantidadeDeArquivos} arquivo(s).");
+                        success = true;
+                    }
+                    else
+                    {
+                        messages.Add($"O diretório {directory} não existe.");
+                        success = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblProgresso.Text = string.Empty;
+                messages.Add($"Erro durante a extração: {ex.Message}");
+                success = false;
+            }
+            finally
+            {
+                // Resetar a barra de progresso
+                progressBar1.Value = 0;
+                // Resetar a label de progresso
+                lblProgresso.Text = string.Empty;
+
+                EnableControls(true, true, true, true);
+            }
+
+            return (success, messages);
+        }
+
+
+        /// <summary>
+        /// Verifica se há pelo menos um diretório selecionado na lista de diretórios.
+        /// </summary>
+        /// <returns>
+        /// Retorna true se pelo menos um diretório estiver selecionado na lista, 
+        /// caso contrário, mostra uma mensagem de erro e retorna false.
+        /// </returns>
+        private bool TemDiretorioSelecionado()
+        {
+            if (listagemDiretorios.Items.Count == 0)
+            {
+                ShowErrorMessage("Selecione ao menos um diretório para continuar!");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void chk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_deleteCompactados.Checked || chk_rename_default.Checked)
+            {
+                EnableControls(true, isEnableContarCompactar: false);
+            } else
+            {
+                EnableControls(true, isEnableContarCompactar: true);
             }
         }
     }
